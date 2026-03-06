@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ingress-svc
+  namespace: nginx
+spec:
+ selector:
+     app: note
+ ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+ type: ClusterIP
