@@ -1,0 +1,47 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+   name: statefulset-demo
+   namespace: mysql
+
+spec: 
+ serviceName: stateful-svc
+ replicas: 3
+ selector:
+   matchLabels:
+     app: sql
+ template:
+   metadata:
+     labels:
+       app: sql
+   spec:
+     containers:
+     - name: statefulstate-container
+       image: mysql:latest
+       ports:
+       -  containerPort: 3306
+       env:
+       - name: MYSQL_ROOT_PASSWORD
+         valueFrom:
+           secretKeyRef:
+             name: secret-sql
+             key: MYSQL_ROOT_PASSWORD
+
+       - name: MYSQL_DATABASE
+         valueFrom:
+           configMapKeyRef:
+             name: sql-config
+             key: MYSQL_DATABASE
+       volumeMounts:
+       - name: sql-data
+         mountPath: /var/lib/mysql
+            
+ volumeClaimTemplates:
+ - metadata:
+      name: sql-data
+   spec:
+      accessModes: ["ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+
