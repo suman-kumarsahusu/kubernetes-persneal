@@ -1,0 +1,18 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: toleration-pod
+  namespace: nginx
+  labels:
+   app: nginx
+spec:
+ containers:
+ - name: nginx
+   image: nginx
+   ports:
+     - containerPort: 80
+ tolerations:
+   - key: "prod"
+     operator: "Equal"
+     value: "true"
+     effect: "NoSchedule"
