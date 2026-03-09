@@ -1,0 +1,41 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata: 
+ name: probe-dly
+ namespace: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+     metadata:
+       name: prob-pod
+       labels:
+         app: nginx
+     spec:
+       containers:
+       - name: dly-prob
+         image: sumansahudockerhub/note-app
+         ports:
+         - containerPort: 8000
+         resources:
+           requests:
+             cpu: 100m
+             memory: 128Mi
+           limits:
+             cpu: 150m
+             memory: 256Mi
+         livenessProbe:
+           httpGet:
+             port: 8000
+             path: /
+         startupProbe:
+           httpGet:
+             port: 8000
+             path: /
+         readinessProbe:
+           httpGet:
+             port: 8000
+             path: /    
+
