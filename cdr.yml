@@ -1,0 +1,33 @@
+kind: CustomResourceDefinition
+apiVersion: apiextensions.k8s.io/v1
+metadata:
+  name: devopsbatchs.devops.cloud.sre
+spec:
+  group: devops.cloud.sre
+  names:
+    plural: devopsbatchs
+    singular: devopsbatch
+    kind: Devops
+    shortNames: 
+       - sre
+       - cloud
+  scope: Namespaced
+  versions:
+      - name: v1
+        served: true
+        storage: true
+        schema:
+          openAPIV3Schema:
+            type: object
+            properties:
+              spec:
+                type: object
+                properties:
+                  name: 
+                    type: string
+                    description: "part of sre"
+                  mode:
+                    type: string
+                    description: "scalability"
+
+
