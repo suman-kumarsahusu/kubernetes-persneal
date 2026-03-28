@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: canary-old
+  namespace: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: nginx
+        version: v2
+    spec:
+      containers:
+      - name: canary-old-container
+        image: amitabhdevops/online_shop
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi

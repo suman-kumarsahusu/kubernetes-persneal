@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: recreate-svc
+  namespace: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+  type: ClusterIP  

@@ -1,0 +1,45 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: blue-dly
+  namespace: nginx
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: blue-pod
+      namespace: nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: blue-container
+          image: amitabhdevops/online_shop
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu : 100m
+              memory: 128Mi
+            limits:
+               cpu : 200m
+               memory: 228Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: blue-service
+   namespace: nginx
+spec:
+  selector:
+    app: nginx-green
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000

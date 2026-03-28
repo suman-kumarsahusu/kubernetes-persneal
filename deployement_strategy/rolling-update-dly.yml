@@ -1,0 +1,49 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rolling-dly
+  namespace: nginx
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: rollingupdate-pod
+      namespace: nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: rolling-update-container
+          image: amitabhdevops/online_shop_without_footer
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu : 100m
+              memory: 128Mi
+            limits:
+               cpu : 200m
+               memory: 228Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rolling-update-service
+  namespace: nginx
+spec:
+  selector:
+    app: nginx
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
